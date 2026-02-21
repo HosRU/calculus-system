@@ -6,30 +6,26 @@ import java.util.List;
 public class main {
 
 	public static void main(String[] args) {
-		int sourceNumber = 56327;
+		int sourceNumber = 26545;
 		
-		translition(sourceNumber, 9);
+		translition(sourceNumber, 8);
 	}
 	
 	private static void translition(int sourceNumber, int system) {
 		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
-		List<Integer> resultArrayNumbersIntegers = new Arraylist<Integer>();
-		
 		String stockViewString = String.valueOf(sourceNumber);
-		System.out.println("Исходное значение: "+ stockViewString);
 		
-		for(int count = 0; count < stockViewString.length(); count++) {
+		System.out.println("Исходное значение: "+ stockViewString);
+		int result = 0;
+		
+		for(int count = 0, size = stockViewString.length() - 1; count < stockViewString.length(); count++, size--) {
 			String charString = String.valueOf(stockViewString.charAt(count));
 			int number = Integer.parseInt(charString);
 			arrayNumbersInteger.add(number);
 			
-			for(int internalCounter = 0; internalCounter < arrayNumbersInteger.length(); internalCounter++) {
-				
-			}
+			result += arrayNumbersInteger.get(count) * Math.pow(system, size);
 		}
-
-		for(int number : arrayNumbersInteger) {
-			System.out.println("Число: " + number);
-		}
+		
+		System.out.println("Результат перевода числа: " + sourceNumber + " в 10 систему исчисления = " + result);
 	}
 }
