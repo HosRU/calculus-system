@@ -1,17 +1,23 @@
 package dev.artemounchik.calculus;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class main {
 
 	public static void main(String[] args) {
 		int sourceNumber = 26545;
 		
-		translition(sourceNumber, 8);
+		int resultTranslition = translition(sourceNumber, 8);
+		System.out.println("Результат перевода в 10ю систему счисления: " + resultTranslition);
+		
+		translitionReverse(resultTranslition, 9);
 	}
 	
-	private static void translition(int sourceNumber, int system) {
+	private static int translition(int sourceNumber, int system) {
 		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
 		String stockViewString = String.valueOf(sourceNumber);
 		
@@ -26,6 +32,22 @@ public class main {
 			result += arrayNumbersInteger.get(count) * Math.pow(system, size);
 		}
 		
-		System.out.println("Результат перевода числа: " + sourceNumber + " в 10 систему исчисления = " + result);
+		return result;
+	}
+	
+	private static int translitionReverse(int sourceNumber, int system) {
+		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
+		String resultString = "";
+		int result = 0;
+		do {
+			
+			result = sourceNumber % 8;
+			sourceNumber = sourceNumber / 8;
+			resultString += result;
+			arrayNumbersInteger.add(result);
+		} while (sourceNumber > 0);
+		
+		System.out.println("Результат перевода из 10ю систему исчисления: " + resultString);
+		return result;
 	}
 }
