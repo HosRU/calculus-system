@@ -1,5 +1,6 @@
 package dev.artemounchik.calculus;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,13 +12,17 @@ public class main {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		
-		System.out.print("Введите исходное число: ");
+		System.out.println("Введите исходное число: ");
 		String sourceNumber = scanner.nextLine();
 		
-		System.out.print("Введите исходную систему счисления: ");
+		System.out.println("Введите исходную систему счисления: ");
 		int sourceSystem = scanner.nextInt();
 		
+		System.out.println("Введите конечную систему счисления: ");
+		int desiredSystem = scanner.nextInt();
+		
 		String resultCheckString = check(sourceNumber, sourceSystem);
+		System.out.println(resultCheckString);
 
 		//		int resultTranslition = translition(sourceNumber, 8);
 //		System.out.println("Результат перевода в 10ю систему счисления: " + resultTranslition);
@@ -60,8 +65,17 @@ public class main {
 	}
 	
 	private static String check(String sourceNumber, int system) {
+		String correctString = sourceNumber.trim().toUpperCase();
+		String validRangeString = "0123456789ABCDEF";
 		
+		for(int count = 0; count < sourceNumber.length(); count++) {
+			char charElementString = sourceNumber.charAt(count);
+			if(!validRangeString.contains(String.valueOf(charElementString))){
+				System.err.println("Некорректный ввод данных");	
+				return "";
+			}
+		}
 		
-		return "";
+		return correctString;
 	}
 }
