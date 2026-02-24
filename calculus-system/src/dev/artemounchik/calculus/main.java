@@ -3,18 +3,26 @@ package dev.artemounchik.calculus;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class main {
-
 	public static void main(String[] args) {
-		int sourceNumber = 26545;
+		Scanner scanner = new Scanner(System.in);
 		
-		int resultTranslition = translition(sourceNumber, 8);
-		System.out.println("Результат перевода в 10ю систему счисления: " + resultTranslition);
+		System.out.print("Введите исходное число: ");
+		String sourceNumber = scanner.nextLine();
 		
-		translitionReverse(resultTranslition, 9);
+		System.out.print("Введите исходную систему счисления: ");
+		int sourceSystem = scanner.nextInt();
+		
+		String resultCheckString = check(sourceNumber, sourceSystem);
+
+		//		int resultTranslition = translition(sourceNumber, 8);
+//		System.out.println("Результат перевода в 10ю систему счисления: " + resultTranslition);
+		
+//		translitionReverse(resultTranslition, 9);
 	}
 	
 	private static int translition(int sourceNumber, int system) {
@@ -49,5 +57,11 @@ public class main {
 		
 		System.out.println("Результат перевода из 10ю систему исчисления: " + resultString);
 		return result;
+	}
+	
+	private static String check(String sourceNumber, int system) {
+		
+		
+		return "";
 	}
 }
