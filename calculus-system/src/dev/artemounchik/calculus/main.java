@@ -1,53 +1,118 @@
 package dev.artemounchik.calculus;
 
+import java.lang.management.OperatingSystemMXBean;
+import java.security.InvalidAlgorithmParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 public class main {
-
 	public static void main(String[] args) {
-		int sourceNumber = 26545;
+		Scanner scanner = new Scanner(System.in);
 		
-		int resultTranslition = translition(sourceNumber, 8);
-		System.out.println("Результат перевода в 10ю систему счисления: " + resultTranslition);
+		System.out.println("Введите исходное число: ");
+		String sourceNumber = scanner.nextLine();
 		
-		translitionReverse(resultTranslition, 9);
+		System.out.println("Введите исходную систему счисления: ");
+		int sourceSystem = scanner.nextInt();
+		
+		System.out.println("Введите конечную систему счисления: ");
+		int desiredSystem = scanner.nextInt();
+		
+		String resultCheckString = check(sourceNumber, sourceSystem);
+		System.out.println("Результат проверки: " + resultCheckString);
+		
+		int resultTranslition = translition(resultCheckString, sourceSystem);
+		System.out.println("Результат 1: " + resultTranslition);
+		
+		int resultTranslitionReverse = translitionReverse(resultCheckString, sourceSystem, desiredSystem);
+		System.out.println("Результат 2: " + resultTranslitionReverse);
 	}
 	
-	private static int translition(int sourceNumber, int system) {
+	private static int translition(String sourceNumber, int sourceSystem) {
 		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
-		String stockViewString = String.valueOf(sourceNumber);
-		
-		System.out.println("Исходное значение: "+ stockViewString);
 		int result = 0;
 		
-		for(int count = 0, size = stockViewString.length() - 1; count < stockViewString.length(); count++, size--) {
-			String charString = String.valueOf(stockViewString.charAt(count));
-			int number = Integer.parseInt(charString);
-			arrayNumbersInteger.add(number);
+		for(int count = 0, size = sourceNumber.length() - 1; count < sourceNumber.length(); count++, size--) {
+			String charString = String.valueOf(sourceNumber.charAt(count));
+			int number = 0;
 			
-			result += arrayNumbersInteger.get(count) * Math.pow(system, size);
+			switch (charString) {
+				case "A": {
+					number = 10;
+					break;
+				}
+				case "B": {
+					number = 11;
+					break;
+				}
+				case "C": {
+					number = 12;
+					break;
+				}
+				case "D": {
+					number = 13;
+					break;
+				}
+				case "E": {
+					number = 14;
+					break;
+				}
+				case "F": {
+					number = 15;
+					break;
+				}
+				default: {
+					number = Integer.parseInt(charString);
+				}
+			}
+			
+			arrayNumbersInteger.add(number);
+			result += arrayNumbersInteger.get(count) * Math.pow(sourceSystem, size);
+			System.out.println("Результатик: " + arrayNumbersInteger.get(count) * Math.pow(sourceSystem, size));
 		}
 		
 		return result;
 	}
 	
-	private static int translitionReverse(int sourceNumber, int system) {
-		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
+	private static int translitionReverse(String sourceNumber, int sourceSystem, int desiredSystem) {
+		List<Integer> arrayNumberList = new ArrayList<>();
+		int resultTranslition = translition(sourceNumber, sourceSystem);
+		
 		String resultString = "";
 		int result = 0;
 		do {
+			result = resultTranslition % desiredSystem;
+			resultTranslition = resultTranslition / desiredSystem;
+			arrayNumberList.add(result);
 			
-			result = sourceNumber % 8;
-			sourceNumber = sourceNumber / 8;
-			resultString += result;
-			arrayNumbersInteger.add(result);
-		} while (sourceNumber > 0);
+		} while (resultTranslition > 0);		
 		
-		System.out.println("Результат перевода из 10ю систему исчисления: " + resultString);
-		return result;
+		Collections.reverse(arrayNumberList);
+		for(int itemList : arrayNumberList) {
+			resultString += itemList;
+		}
+		
+		return Integer.parseInt(resultString);
+	}
+	
+	private static String check(String sourceNumber, int system) {
+		String correctString = sourceNumber.trim().toUpperCase();
+		String validRangeString = "0123456789ABCDEF";
+		
+		for(int count = 0; count < correctString.length(); count++) {
+			char charElementString = correctString.charAt(count);
+			if(!validRangeString.contains(String.valueOf(charElementString))){
+				System.err.println("Некорректный ввод данных");	
+				return "";
+			}
+		}
+		
+		return correctString;
 	}
 }
