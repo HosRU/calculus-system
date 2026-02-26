@@ -1,5 +1,6 @@
 package dev.artemounchik.calculus;
 
+import java.lang.management.OperatingSystemMXBean;
 import java.security.InvalidAlgorithmParameterException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,26 +24,52 @@ public class main {
 		
 		String resultCheckString = check(sourceNumber, sourceSystem);
 		System.out.println(resultCheckString);
-
-		//		int resultTranslition = translition(sourceNumber, 8);
-//		System.out.println("Результат перевода в 10ю систему счисления: " + resultTranslition);
 		
-//		translitionReverse(resultTranslition, 9);
+		int resultTranslition = translition(resultCheckString, sourceSystem);
+		System.out.println(resultTranslition);
 	}
 	
-	private static int translition(int sourceNumber, int system) {
+	private static int translition(String sourceNumber, int sourceSystem) {
 		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
-		String stockViewString = String.valueOf(sourceNumber);
-		
-		System.out.println("Исходное значение: "+ stockViewString);
 		int result = 0;
 		
-		for(int count = 0, size = stockViewString.length() - 1; count < stockViewString.length(); count++, size--) {
-			String charString = String.valueOf(stockViewString.charAt(count));
-			int number = Integer.parseInt(charString);
-			arrayNumbersInteger.add(number);
+		for(int count = 0, size = sourceNumber.length() - 1; count < sourceNumber.length(); count++, size--) {
+			String charString = String.valueOf(sourceNumber.charAt(count));
+			int number = 0;
 			
-			result += arrayNumbersInteger.get(count) * Math.pow(system, size);
+			switch (charString) {
+				case "A": {
+					number = 10;
+					break;
+				}
+				case "B": {
+					number = 11;
+					break;
+				}
+				case "C": {
+					number = 12;
+					break;
+				}
+				case "D": {
+					number = 13;
+					break;
+				}
+				case "E": {
+					number = 14;
+					break;
+				}
+				case "F": {
+					number = 15;
+					break;
+				}
+				default: {
+					number = Integer.parseInt(charString);
+				}
+			}
+			
+			arrayNumbersInteger.add(number);
+			result += arrayNumbersInteger.get(count) * Math.pow(sourceSystem, size);
+			System.out.println("Результатик: " + arrayNumbersInteger.get(count) * Math.pow(sourceSystem, size));
 		}
 		
 		return result;
@@ -68,8 +95,8 @@ public class main {
 		String correctString = sourceNumber.trim().toUpperCase();
 		String validRangeString = "0123456789ABCDEF";
 		
-		for(int count = 0; count < sourceNumber.length(); count++) {
-			char charElementString = sourceNumber.charAt(count);
+		for(int count = 0; count < correctString.length(); count++) {
+			char charElementString = correctString.charAt(count);
 			if(!validRangeString.contains(String.valueOf(charElementString))){
 				System.err.println("Некорректный ввод данных");	
 				return "";
