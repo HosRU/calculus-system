@@ -3,6 +3,8 @@ package dev.artemounchik.calculus;
 import java.lang.management.OperatingSystemMXBean;
 import java.security.InvalidAlgorithmParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -23,10 +25,13 @@ public class main {
 		int desiredSystem = scanner.nextInt();
 		
 		String resultCheckString = check(sourceNumber, sourceSystem);
-		System.out.println(resultCheckString);
+		System.out.println("Результат проверки: " + resultCheckString);
 		
 		int resultTranslition = translition(resultCheckString, sourceSystem);
-		System.out.println(resultTranslition);
+		System.out.println("Результат 1: " + resultTranslition);
+		
+		int resultTranslitionReverse = translitionReverse(resultCheckString, sourceSystem, desiredSystem);
+		System.out.println("Результат 2: " + resultTranslitionReverse);
 	}
 	
 	private static int translition(String sourceNumber, int sourceSystem) {
@@ -75,20 +80,25 @@ public class main {
 		return result;
 	}
 	
-	private static int translitionReverse(int sourceNumber, int system) {
-		List<Integer> arrayNumbersInteger = new ArrayList<Integer>(16);
+	private static int translitionReverse(String sourceNumber, int sourceSystem, int desiredSystem) {
+		List<Integer> arrayNumberList = new ArrayList<>();
+		int resultTranslition = translition(sourceNumber, sourceSystem);
+		
 		String resultString = "";
 		int result = 0;
 		do {
+			result = resultTranslition % desiredSystem;
+			resultTranslition = resultTranslition / desiredSystem;
+			arrayNumberList.add(result);
 			
-			result = sourceNumber % 8;
-			sourceNumber = sourceNumber / 8;
-			resultString += result;
-			arrayNumbersInteger.add(result);
-		} while (sourceNumber > 0);
+		} while (resultTranslition > 0);		
 		
-		System.out.println("Результат перевода из 10ю систему исчисления: " + resultString);
-		return result;
+		Collections.reverse(arrayNumberList);
+		for(int itemList : arrayNumberList) {
+			resultString += itemList;
+		}
+		
+		return Integer.parseInt(resultString);
 	}
 	
 	private static String check(String sourceNumber, int system) {
